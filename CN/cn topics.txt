@@ -1,0 +1,36 @@
+1. Fundamental characteristics of data communication -- delivery, accuracy, timeliness, jitter
+
+2. 5 components of data communication -- message, sender, receiver, transmission medium, protocol
+
+3. Types of data flow in a transmission medium -- simplex, half-duplex, full-duplex
+
+4. Network topologies -- mesh, star, bus, ring (with fig.)
+
+
+
+5. Switching -- circuit, packet
+
+6. Tcp/ip and osi models -- functionalities of layers (with fig.)
+
+7. Propagation mode -- single mode, multimode (step, graded index)
+
+8. Error detection -- single-bit and burst errors (with fig.)
+
+9. Error detection with block coding -- (with fig.)
+
+10. Hamming distance and problems -- CONCENTRATE MORE
+
+11. Cyclic codes -- CRC, checksum -- PROBLEMS WILL BE COVERED TOMORROW
+
+12. DLC framing -- byte, bit stuffing (with fig.)
+
+13. DLL protocols -- simple, stop snd wait protocols (algorithm and fig.)
+
+14. HDLC flow and frame fields -- flag, address, control, information, fcs
+
+
+
+15. IPv4 addressing -- classful addressing (A, B, C, D, E) (with fig. - 18.18)
+
+
+(Read selected topics from these page numbers from the notes: 1-15, 47-51, 60-66, 74-78, 83-88).

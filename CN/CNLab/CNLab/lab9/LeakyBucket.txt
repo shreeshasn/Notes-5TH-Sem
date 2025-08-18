@@ -1,0 +1,52 @@
+ Develop a program for congestion control using a leaky bucket algorithm.
+
+ 
+ package com.leakyBucket;
+
+import java.util.Scanner;
+
+public class LeakyBucket
+{
+	public static int bucketSize = 1000;
+	public static int outputRate = 100;
+	
+	public static void sendPacket(int pktSize)
+	{
+		if(pktSize > bucketSize)
+			System.out.println("Bucket overflow!");
+		
+		else
+		{
+			while(pktSize > outputRate)
+			{
+				System.out.println(outputRate + " bytes of packets sent...");
+				pktSize -= outputRate;
+			}
+			
+			System.out.println(pktSize + " bytes of packets sent...");
+		}
+	}
+	
+	public static void main(String[] args)
+	{
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter the number of packets: \t");
+		int numPkts = scan.nextInt();
+		
+		if(numPkts > 0)
+		{
+			for(int i=1; i <= numPkts; i++)
+			{
+				System.out.println("Enter packet " + i + " size: \t");
+				int pktSize = scan.nextInt();
+				
+				sendPacket(pktSize);
+			}
+		}
+		
+		else
+			System.out.println("No packets to send!");
+		
+		scan.close();
+	}
+}

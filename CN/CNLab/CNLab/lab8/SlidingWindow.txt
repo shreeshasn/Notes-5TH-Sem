@@ -1,0 +1,109 @@
+Develop a program to implement a sliding window protocol in the data link layer.
+
+
+==================================ReceiverWindow==================================
+
+package com.slidingWindow;
+
+import java.io.*;
+import java.net.*;
+
+public class SwReceiver
+{
+	public static void main(String[] args) throws Exception
+	{
+		SwReceiver swr = new SwReceiver();
+		swr.run();
+	}
+	
+	public void run() throws Exception
+	{
+		String temp = "Any message", str = "Exit";
+		
+		System.out.println("Receiver ready...\n");
+		
+		ServerSocket ss = new ServerSocket(9999);
+		Socket ss_accept = ss.accept();
+		
+		BufferedReader ss_bf = new BufferedReader(new InputStreamReader(ss_accept.getInputStream()));
+		PrintStream ps = new PrintStream(ss_accept.getOutputStream());
+		
+		while(temp.compareTo(str) != 0)
+		{
+			Thread.sleep(1000);
+			temp = ss_bf.readLine();
+			
+			if(temp.compareTo(str) == 0)
+				break;
+		
+		System.out.println("Frame " + temp + " received!");
+		Thread.sleep(3000);
+		ps.println("Received");
+		}
+		
+		System.out.println("All frame received successfully!");
+		
+		ss.close();
+	}
+}
+
+
+
+==================================SenderWindow====================================
+
+package com.slidingWindow;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.util.Scanner;
+
+public class SwSender
+{
+	public static void main(String[] args) throws Exception
+	{
+		SwSender sws = new SwSender();
+		sws.run();
+	}
+	
+	public void run() throws Exception
+	{
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Enter the number of frames to be sent:\t");
+		int n = sc.nextInt();
+		
+		Socket soc = new Socket("localhost", 9999);
+		PrintStream ps = new PrintStream(soc.getOutputStream());
+		
+		for(int i=0; i<=n;)
+		{
+			if(i==n)
+			{
+				ps.println("Exit");
+				break;
+			}
+			
+			System.out.println("Frame number " + i + " is sent");
+			ps.println(i);
+			
+			BufferedReader bf = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+			
+			String ack = bf.readLine();
+			
+			if(ack != null)
+			{
+				System.out.println("ACK received from the receiver!");
+				i++;
+				Thread.sleep(3000);
+			}
+			
+			else
+				ps.println(i);
+		}
+		
+		soc.close();
+		sc.close();
+	}
+}

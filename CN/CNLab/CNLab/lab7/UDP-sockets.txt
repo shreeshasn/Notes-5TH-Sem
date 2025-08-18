@@ -1,0 +1,59 @@
+Develop a program on a datagram socket for client - server to display the messages on server side, typed at the client side.
+
+=============================================UdpClient=================================================
+
+package com.sock;
+
+import java.net.*;
+import java.util.Scanner;
+
+public class UdpClient 
+{
+	public static void main(String[] args) throws Exception 
+	{ 
+		System.out.println("Sender:\n"); 
+		
+		DatagramSocket ds = new DatagramSocket(); 
+		
+		Scanner scanner = new Scanner(System.in); 
+		System.out.println("Enter the Message:\n"); 
+	
+		while(true) 
+		{ 
+			String msg = scanner.nextLine();
+			
+			InetAddress ip = InetAddress.getByName("127.0.0.1"); 
+			
+			DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), ip, 3000); 
+			ds.send(dp);
+		}
+	}
+}
+
+=============================================UdpServer=================================================
+
+package com.sock;
+
+import java.net.*;
+
+public class UdpServer 
+{
+	public static void main(String[] args) throws Exception 
+	{ 
+		byte[] buf = new byte[1024];
+		
+		System.out.println("Receiver:\n");
+		
+		DatagramSocket ds = new DatagramSocket(3000);
+		
+		while(true)
+		{
+			DatagramPacket dp = new DatagramPacket(buf, 1024);
+			ds.receive(dp);
+			
+			String msg = new String(dp.getData(), 0, dp.getLength());
+			
+			System.out.println(msg);
+		}
+	} 
+}

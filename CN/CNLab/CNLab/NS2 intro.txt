@@ -1,0 +1,43 @@
+NS2 -- network simulator version 2
+	-- a discrete event packet-level simulator
+	-- opensource
+
+tcl -- tool command language -- a simulation script atop C++ protocol specification
+	-- simulates wired and wireless networks with topology setup, traffic management specifications
+
+C++/OTcl -- data/control specification
+
+nam -- network animator
+
+trace file -- logs of simulated events that contain traffic behavioral statistics (performance, delay)
+
+namespace -- scope for identifiers
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://sourceforge.net/projects/xming/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

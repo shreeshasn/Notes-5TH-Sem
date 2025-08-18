@@ -1,0 +1,411 @@
+CN LAB
+
+//CRC 16
+
+import java.io.*;
+class CRC16
+{
+ public static void main(String args[]) throws IOException
+ {
+
+ BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+ int[ ] data;
+ int[ ] div;
+ int[ ] divisor;
+ int[ ] rem;
+ int[ ] crc;
+ int data_bits, divisor_bits, tot_length;
+
+ System.out.println("Enter number of data bits : ");
+ data_bits=Integer.parseInt(br.readLine());
+ data=new int[data_bits];
+
+ System.out.println("Enter data bits : ");
+ for(int i=0; i<data_bits; i++)
+ data[i]=Integer.parseInt(br.readLine());
+
+ System.out.println("Enter number of bits in divisor : ");
+ divisor_bits=Integer.parseInt(br.readLine());
+ divisor=new int[divisor_bits];
+
+ System.out.println("Enter Divisor bits : ");
+ for(int i=0; i<divisor_bits; i++)
+ divisor[i]=Integer.parseInt(br.readLine());
+
+ tot_length=data_bits+divisor_bits-1;
+ div=new int[tot_length];
+ rem=new int[tot_length];
+ crc=new int[tot_length];
+
+ for(int i=0;i<data.length;i++)
+ div[i]=data[i];
+
+ System.out.print("Dividend (after appending 0's) are : ");
+ for(int i=0; i<div.length; i++)
+ System.out.print(div[i]);
+ System.out.println();
+ for(int j=0; j<div.length; j++)
+ {
+ rem[j] = div[j];
+ }
+
+ rem=divide(div, divisor, rem);
+ for(int i=0;i<div.length;i++)
+ {
+ crc[i]=(div[i]^rem[i]);
+ }
+ System.out.println();
+
+ System.out.println("CRC code : ");
+ for(int i=0;i<crc.length;i++)
+ System.out.print(crc[i]);
+ System.out.println();
+
+ System.out.println("Enter CRC code of "+tot_length+" bits : ");
+ for(int i=0; i<crc.length; i++)
+ crc[i]=Integer.parseInt(br.readLine());
+ for(int j=0; j<crc.length; j++)
+ {
+ rem[j] = crc[j];
+ }
+ rem=divide(crc, divisor, rem);
+ for(int i=0; i<rem.length; i++)
+ {
+ if(rem[i]!=0)
+ {
+ System.out.println("Error");
+ break;
+ }
+ if(i==rem.length-1)
+ System.out.println("No Error");
+ }
+ }
+
+ static int[] divide(int div[],int divisor[], int rem[])
+{
+ int cur=0;
+ while(true)
+ {
+ for(int i=0;i<divisor.length;i++)
+ rem[cur+i]=(rem[cur+i]^divisor[i]);
+ while(rem[cur]==0 && cur!=rem.length-1)
+ cur++;
+ if((rem.length-cur)<divisor.length)
+ break;
+ }
+ return rem;
+} 
+}
+
+
+
+/// BelmanFord 
+
+
+package com.bellman;
+
+import java.util.Scanner; 
+
+public class BellmanFord 
+{
+	private int D[]; 
+	private int num_ver; 
+	public static final int MAX_VALUE = 999; 
+ 
+	public BellmanFord(int num_ver) 
+	{ 
+		this.num_ver = num_ver; 
+		D = new int[num_ver + 1]; 
+	} 
+ 
+	public void BellmanFordEvaluation(int source, int A[][]) 
+	{ 
+		for (int node = 1; node <= num_ver; node++) 
+		{ 
+			D[node] = MAX_VALUE;
+		} 
+	
+		D[source] = 0; 
+
+		for (int node = 1; node <= num_ver - 1; node++) 
+		{ 
+			for (int sn = 1; sn <= num_ver; sn++) 
+			{ 
+				for (int dn = 1; dn <= num_ver; dn++) 
+				{ 
+					if (A[sn][dn] != MAX_VALUE) 
+					{ 
+						if (D[dn] > D[sn]+ A[sn][dn]) 
+						D[dn] = D[sn] + A[sn][dn]; 
+					} 
+				} 
+			} 
+		} 
+
+		for (int sn = 1; sn <= num_ver; sn++) 
+		{ 
+			for (int dn = 1; dn <= num_ver; dn++) 
+			{ 
+				if (A[sn][dn] != MAX_VALUE) 
+				{ 
+					if (D[dn] > D[sn]+ A[sn][dn]) 
+					System.out.println("The Graph contains negative egde cycle"); 
+				} 
+			} 
+		} 
+
+		for (int vertex = 1; vertex <= num_ver; vertex++) 
+		{ 
+			System.out.println("distance of source " + source + " to "+ vertex + " is " + D[vertex]); 
+		} 
+	}
+ 
+	public static void main(String[ ] args) 
+	{ 
+		int num_ver = 0; 
+		int source; 
+		Scanner scanner = new Scanner(System.in); 
+		
+		System.out.println("Enter the number of vertices"); 
+		num_ver = scanner.nextInt(); 
+		int A[][] = new int[num_ver + 1][num_ver + 1]; 
+		
+		System.out.println("Enter the adjacency matrix"); 
+
+		for (int sn = 1; sn <= num_ver; sn++) 
+		{ 
+			for (int dn = 1; dn <= num_ver; dn++) 
+			{
+				A[sn][dn] = scanner.nextInt(); 
+
+				if (sn == dn) 
+				{ 
+					A[sn][dn] = 0; 
+					continue; 
+				} 
+				
+				if (A[sn][dn] == 0) 
+				{ 
+					A[sn][dn] = MAX_VALUE; 
+				} 
+			} 
+		} 
+
+		System.out.println("Enter the source vertex"); 
+		source = scanner.nextInt(); 
+		
+		BellmanFord b = new BellmanFord (num_ver); 
+		b.BellmanFordEvaluation(source, A); 
+		scanner.close(); 
+	} 
+}
+
+
+
+/// UDP
+
+
+=============================================UdpClient=================================================
+
+package com.sock;
+
+import java.net.*;
+import java.util.Scanner;
+
+public class UdpClient 
+{
+	public static void main(String[] args) throws Exception 
+	{ 
+		System.out.println("Sender:\n"); 
+		
+		DatagramSocket ds = new DatagramSocket(); 
+		
+		Scanner scanner = new Scanner(System.in); 
+		System.out.println("Enter the Message:\n"); 
+	
+		while(true) 
+		{ 
+			String msg = scanner.nextLine();
+			
+			InetAddress ip = InetAddress.getByName("127.0.0.1"); 
+			
+			DatagramPacket dp = new DatagramPacket(msg.getBytes(), msg.length(), ip, 3000); 
+			ds.send(dp);
+		}
+	}
+}
+
+=============================================UdpServer=================================================
+
+package com.sock;
+
+import java.net.*;
+
+public class UdpServer 
+{
+	public static void main(String[] args) throws Exception 
+	{ 
+		byte[] buf = new byte[1024];
+		
+		System.out.println("Receiver:\n");
+		
+		DatagramSocket ds = new DatagramSocket(3000);
+		
+		while(true)
+		{
+			DatagramPacket dp = new DatagramPacket(buf, 1024);
+			ds.receive(dp);
+			
+			String msg = new String(dp.getData(), 0, dp.getLength());
+			
+			System.out.println(msg);
+		}
+	} 
+}
+
+
+
+/// TCP
+
+=============================================TcpClient=================================================
+
+package com.sock;
+
+import java.io.*;
+import java.net.*;
+import java.util.Scanner;
+
+public class TcpClient
+{
+	public static void main(String[] args) throws IOException,InterruptedException
+	{
+		DataOutputStream out;
+		DataInputStream in;
+		
+		Scanner scanner = new Scanner(System.in);
+		Socket socket = new Socket("127.0.0.1", 6000);
+	 
+		System.out.println("Client Connected to Server!\n");
+		System.out.print("Enter the filename to request:\n");
+		
+		String filename = scanner.nextLine();
+		
+		in = new DataInputStream(socket.getInputStream());
+		out = new DataOutputStream(socket.getOutputStream());
+		
+		out.writeUTF(filename);
+		String fileContent = in.readUTF();
+		 
+		if (fileContent.length() > 0)
+			System.out.println(fileContent);
+		
+		else
+			System.out.println("The file is empty!");
+		
+		socket.close();
+		scanner.close();
+		}
+}
+
+
+==============================================TcpServer================================================
+
+package com.sock;
+
+import java.io.*;
+import java.net.*;
+import java.nio.file.*;
+
+public class TcpServer
+{
+
+	public static void main(String[] args) throws IOException
+	{
+		ServerSocket server;
+		DataOutputStream out = null;
+		DataInputStream in;
+	 
+		try
+		{
+			server = new ServerSocket(6000, 1);
+			System.out.println("The server is waiting for the client...\n");
+			
+			Socket socket = server.accept();
+			System.out.println("Client connected!\n");
+			
+			in = new DataInputStream(socket.getInputStream());
+			out = new DataOutputStream(socket.getOutputStream());
+			
+			String fileName = in.readUTF();
+			System.out.println("Requested file : " + fileName);
+			
+			byte[] filedata = Files.readAllBytes(Paths.get(fileName));
+			String fileContent = new String(filedata);
+			
+			out.writeUTF(fileContent.toString());
+			System.out.println("File sent successfully!");
+	
+			server.close();
+		}
+	
+		catch (Exception e)
+		{
+			System.out.println(e.getMessage());
+			out.writeUTF("The requested file doesn't exist!");
+		}
+	}
+}
+
+
+/// Leaky Bucket
+
+
+ package com.leakyBucket;
+
+import java.util.Scanner;
+
+public class LeakyBucket
+{
+	public static int bucketSize = 1000;
+	public static int outputRate = 100;
+	
+	public static void sendPacket(int pktSize)
+	{
+		if(pktSize > bucketSize)
+			System.out.println("Bucket overflow!");
+		
+		else
+		{
+			while(pktSize > outputRate)
+			{
+				System.out.println(outputRate + " bytes of packets sent...");
+				pktSize -= outputRate;
+			}
+			
+			System.out.println(pktSize + " bytes of packets sent...");
+		}
+	}
+	
+	public static void main(String[] args)
+	{
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter the number of packets: \t");
+		int numPkts = scan.nextInt();
+		
+		if(numPkts > 0)
+		{
+			for(int i=1; i <= numPkts; i++)
+			{
+				System.out.println("Enter packet " + i + " size: \t");
+				int pktSize = scan.nextInt();
+				
+				sendPacket(pktSize);
+			}
+		}
+		
+		else
+			System.out.println("No packets to send!");
+		
+		scan.close();
+	}
+}
